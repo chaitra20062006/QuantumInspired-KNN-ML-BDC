@@ -1,81 +1,230 @@
-# QIEA-KNN: Person A, Phase 1 + Phase 2 deliverable (this zip contains both)
+# Quantum-Inspired Evolutionary Algorithm for K-Nearest Neighbors (QIEA-KNN)
 
-Person A = Search Algorithm Owner. Phase 1 = everything needed to run the search algorithms end to end
-on stand-ins, so you are never blocked by Person B or C.
+A feature-selection and hyperparameter-optimization framework that combines a **Quantum-Inspired Evolutionary Algorithm (QIEA)** with the K-Nearest Neighbors (KNN) classifier for medical classification tasks.
 
-## Phase split (Person A, 8 points)
-**Phase 1 (this zip): foundations + search engine**
-- Shared interface file with the agreed solution format and contract checks (`shared/interfaces.py`)
-- QIEA core (3): equal-amplitude q-bit init, observation, rotation gate toward best-so-far, NOT-gate quantum mutation, best tracking, joint feature + K encoding
-- GA baseline (2): same fitness, same chromosome, same evaluation budget as QIEA
-- Baseline KNN (1): all features, K=5, Euclidean
-- Stand-ins: toy objective, sklearn CV fitness, sklearn Breast Cancer loader
-- Contract/behaviour tests and a runnable demo
+## 1. Project Overview
 
-**Phase 2 (next)**
-- Metrics, statistical tests and plotting toolkit (2): accuracy, precision, recall, F1, AUC, #features, Wilcoxon / paired t-test, mean ± std, convergence curves (used by all three)
-- Swap stand-ins for the real versions: B's fitness and K decoding, C's data pipeline and folds, C's Spark `evaluate_population`
-- Tune QIEA (rotation angle, mutation, population size) and run all 5 methods on Breast Cancer Wisconsin, 10+ seeds
-- Literature search and write-up of Related Work and Proposed Method (QIEA part)
+Traditional K-Nearest Neighbors uses all available features and requires the value of K to be selected manually or through separate optimization.
 
-## Layout
+This project explores a quantum-inspired evolutionary search approach to jointly optimize:
+
+- **Feature Selection:** Identifying a smaller, informative subset of input features.
+- **K Optimization:** Finding a suitable number of nearest neighbors for classification.
+
+The objective is to reduce feature dimensionality while maintaining competitive classification performance.
+
+The framework also includes comparison algorithms and evaluation components to assess the effectiveness of the proposed approach.
+
+## 2. Objectives
+
+- Implement a Quantum-Inspired Evolutionary Algorithm for feature selection and K optimization.
+- Develop a Genetic Algorithm (GA) baseline for comparison.
+- Implement a conventional KNN baseline.
+- Evaluate classification performance using standard machine-learning metrics.
+- Analyze feature-selection effectiveness.
+- Compare optimization approaches using statistical tests and visualizations.
+- Support integration with fuzzy KNN and parallel fitness evaluation.
+
+## 3. Methodology
+
+### Quantum-Inspired Evolutionary Algorithm (QIEA)
+
+QIEA uses quantum-inspired representations to maintain probabilistic candidate solutions.
+
+The general optimization workflow consists of:
+
+1. Initialize a population of quantum-inspired individuals.
+2. Observe candidate solutions from their probabilistic representations.
+3. Decode the observed solutions into feature-selection masks and K values.
+4. Evaluate each candidate using a fitness function.
+5. Update the population using quantum-inspired rotation operations.
+6. Repeat the optimization process across generations.
+7. Return the best-performing feature subset and K value.
+
+### Comparison Algorithms
+
+The framework includes:
+
+- **KNN:** Conventional classification baseline.
+- **GA-KNN:** Genetic Algorithm-based optimization.
+- **PSO-KNN:** Particle Swarm Optimization-based comparison.
+- **QIEA-KNN:** Proposed quantum-inspired optimization approach.
+- **QIEA-Fuzzy-KNN:** Extension incorporating fuzzy KNN classification.
+
+## 4. Evaluation Metrics
+
+The implementations include evaluation using:
+
+| Metric | Purpose |
+|---|---|
+| Accuracy | Overall classification correctness |
+| Precision | Correctness of positive predictions |
+| Recall | Ability to identify positive cases |
+| F1-score | Balance between precision and recall |
+| ROC-AUC | Classification discrimination ability |
+| Number of Features | Measures feature reduction |
+
+Statistical analysis is also included to compare algorithm performance across experimental runs.
+
+## 5. Project Structure
+
+```text
+qiea_knn/
+│
+├── person_a/
+│   ├── __init__.py
+│   ├── qiea.py
+│   ├── ga.py
+│   ├── baseline_knn.py
+│   ├── components.py
+│   ├── metrics.py
+│   ├── stats.py
+│   ├── plotting.py
+│   ├── standins.py
+│   └── pso_standin.py
+│
+├── shared/
+│   ├── __init__.py
+│   └── interfaces.py
+│
+├── scripts/
+│   ├── run_phase1_demo.py
+│   ├── run_full_pipeline.py
+│   ├── make_plots.py
+│   └── tune_qiea.py
+│
+├── tests/
+│   ├── test_phase2.py
+│   └── test_contracts.py
+│
+├── results/
+│   ├── full_results.csv
+│   ├── phase1_demo_results.csv
+│   ├── summary.md
+│   ├── histories.json
+│   └── [generated plots and experiment outputs]
+│
+├── docs/
+├── requirements.txt
+├── .gitignore
+└── README.md
 ```
-shared/interfaces.py     agreed interfaces (one shared file)
-person_a/qiea.py         QIEA  run(fitness_fn, n_features, generations, seed) -> best_mask, best_k, history
-person_a/ga.py           GA baseline, same signature
-person_a/baseline_knn.py default KNN reference
-person_a/standins.py     stand-ins for B's fitness and C's data
-tests/test_contracts.py  contract tests
-scripts/run_phase1_demo.py  QIEA vs GA vs baseline demo
-results/                 demo CSV and convergence plot
+
+## 6. Technologies Used
+
+- Python
+- NumPy
+- Pandas
+- Scikit-learn
+- Matplotlib
+- SciPy
+- Unittest
+
+## 7. Installation and Setup
+
+### Prerequisites
+
+- Python 3.10 or later (use a version compatible with the installed dependencies).
+- Git
+
+### Clone the Repository
+
+```bash
+git clone https://github.com/chaitra20062006/QuantumInspired-KNN-ML-BDC.git
+cd QuantumInspired-KNN-ML-BDC
 ```
 
-## Run
+### Create a Virtual Environment
+
+Windows PowerShell:
+
+```powershell
+python -m venv venv
+.\venv\Scripts\Activate.ps1
 ```
+
+### Install Dependencies
+
+```bash
 pip install -r requirements.txt
-python -m unittest discover -s tests -v        # 11 tests (pytest also works)
-python scripts/run_phase1_demo.py --seeds 5 --pop 20 --gens 20
 ```
 
-## Plugging in teammates' parts
-- **B's fitness:** `fn = bind_fitness(real_fitness, X, y, folds)`, then `qiea.run(fn, n_features, gens, seed)`.
-- **C's Spark evaluator:** `qiea.run(..., evaluate_population=spark_evaluate)`. Same for `ga.run`.
-- **K encoding:** `decode_k` in `shared/interfaces.py` is a proposal (4 bits -> odd K in 1..31). B owns the final version; agree it before merging. Pass `k_bits=` to match.
+## 8. Running the Project
 
-## Assumptions to confirm with the team
-1. Optimizers receive `fitness_fn(mask, k)` with X, y, folds already bound.
-2. `history` is a list of dicts `{generation, best_fitness, mean_fitness, n_evals}`.
-3. Budget = pop_size x generations evaluations for both QIEA and GA (B's PSO should match).
+Run the Phase 1 demonstration:
 
-## Phase 2 (added in this zip)
-New modules in `person_a/`: `metrics.py` (accuracy, precision, recall, F1, AUC, #features, generations-to-99%),
-`stats.py` (Wilcoxon, paired t-test, Holm correction, mean ± std), `plotting.py` (convergence curves, boxplots),
-`components.py` (use B's and C's real code via env vars, stand-ins otherwise), plus stand-ins that follow the agreed
-interfaces exactly: `standins.standin_predict` / `standin_fitness_pred` (crisp + fuzzy KNN) and `pso_standin.py`.
+```bash
+python scripts/run_phase1_demo.py
 ```
-python scripts/tune_qiea.py          # small grid for QIEA and GA on separate tuning seeds -> results/tuning.json
-python scripts/run_full_pipeline.py  # 5 methods x 10 seeds -> results/summary.md, full_results.csv, plots
-python scripts/make_plots.py         # regenerate plots from saved results
-python -m unittest discover -s tests # 20 tests
+
+Run the full pipeline:
+
+```bash
+python scripts/run_full_pipeline.py
 ```
-Switch to the real components when ready, e.g.
-`QIEA_FITNESS=person_b.fitness:fitness QIEA_PREDICT=person_b.knn:predict QIEA_EVALUATOR=person_c.spark:evaluate_population python scripts/run_full_pipeline.py`
-(module paths are examples; use your teammates' actual ones). The PSO, fuzzy KNN and fitness in this zip are
-**stand-ins written by Person A**, so the five-method numbers must be re-run after integration.
 
-## Results with stand-ins (Breast Cancer Wisconsin, 10 seeds, pop 20 x 20 gens, held-out test)
-See `results/summary.md` for the full table and tests. Headline, mean over seeds:
-all methods reach test F1 of about 0.963 to 0.970 with 6 to 7 features instead of 30, while the no-selection KNN
-baseline has F1 0.9755. Differences between QIEA-KNN, GA and PSO were not statistically significant (Wilcoxon
-p > 0.05 for F1; QIEA used fewer features than PSO, p = 0.023 uncorrected, 0.070 after Holm).
-Selection lowered recall versus the baseline (p = 0.006, Holm 0.023). QIEA-KNN did not converge faster than GA:
-it needed 2.8 more generations to reach 99% of its final fitness (p = 0.15, not significant) although it ended with
-slightly higher mean training fitness. Fuzzy KNN did not significantly change F1, recall or features here.
-These hypotheses (fewer features with equal F1, faster convergence than GA, better recall) are therefore
-**not confirmed** on this dataset and budget; report them as they are.
+Run QIEA tuning:
 
-## Limitations to state
-- PSO, fuzzy KNN and the fitness are stand-ins; the K encoding is a proposal.
-- Tuning gave QIEA and GA small grids only; the best QIEA setting was at the grid edge. PSO was not tuned.
-- Small budget (400 evaluations per run); each seed uses its own split, so variance includes data-split variance.
-- `gens_to_99` is relative to each run's own final value, so a method that keeps improving looks slower.
+```bash
+python scripts/tune_qiea.py
+```
+
+Generate plots:
+
+```bash
+python scripts/make_plots.py
+```
+
+## 9. Running Tests
+
+Execute the test suite using:
+
+```bash
+python -m unittest discover -s tests -v
+```
+
+The tests cover implementation behavior and shared interface contracts.
+
+## 10. Experimental Results
+
+The project generates experimental outputs in the `results/` directory, including:
+
+- Classification performance comparisons.
+- Feature-selection comparisons.
+- Convergence plots.
+- Optimization histories.
+- CSV result summaries.
+- Statistical analysis outputs.
+
+Results should be interpreted according to the experiment configuration and the implementation used. Preliminary demonstrations and stand-in components should not be treated as final integrated experimental results.
+
+## 11. Team Contributions
+
+The project is organized into three major work areas.
+
+| Team Member | Responsibilities |
+|---|---|
+| Person A | QIEA implementation, GA baseline, conventional KNN, evaluation metrics, statistical analysis and plotting |
+| Person B | Fuzzy KNN, PSO baseline and associated optimization components |
+| Person C | Data preprocessing, validation, Spark-based parallel evaluation and integration |
+
+## 12. Current Development Status
+
+The repository contains the Person A implementation, shared interfaces, experiment scripts, tests and generated results.
+
+Integration of the individual team components is part of the ongoing development process. The full pipeline should be considered final only after the actual implementations from all team members are integrated and validated together.
+
+## 13. Future Enhancements
+
+- Complete integration of QIEA, fuzzy KNN and PSO components.
+- Integrate parallel fitness evaluation using Apache Spark.
+- Evaluate on additional medical datasets.
+- Perform broader hyperparameter tuning.
+- Improve reproducibility through controlled experimental configurations.
+- Extend statistical comparisons across multiple datasets.
+
+## 14. Contributors
+
+Developed as a collaborative academic project focused on quantum-inspired optimization and machine-learning-based medical classification.
+
+**Repository:** [QuantumInspired-KNN-ML-BDC](https://github.com/chaitra20062006/QuantumInspired-KNN-ML-BDC)
