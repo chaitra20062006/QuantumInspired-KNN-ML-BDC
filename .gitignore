@@ -1,0 +1,10 @@
+﻿venv/
+.venv/
+__pycache__/
+*.pyc
+.env
+.pytest_cache/
+.DS_Store
+
+docs/proposed_method_qiea.md
+docs/related_work_notes.md

@@ -1,0 +1,102 @@
+{
+  "qiea": {
+    "best": {
+      "delta_theta": 0.25132741228718347,
+      "p_mut": 0.005
+    },
+    "grid": [
+      {
+        "params": {
+          "delta_theta": 0.06283185307179587,
+          "p_mut": 0.005
+        },
+        "mean_train_fitness": 0.9539910344858439
+      },
+      {
+        "params": {
+          "delta_theta": 0.06283185307179587,
+          "p_mut": 0.02
+        },
+        "mean_train_fitness": 0.9501456596811121
+      },
+      {
+        "params": {
+          "delta_theta": 0.06283185307179587,
+          "p_mut": 0.05
+        },
+        "mean_train_fitness": 0.9473380566149151
+      },
+      {
+        "params": {
+          "delta_theta": 0.15707963267948966,
+          "p_mut": 0.005
+        },
+        "mean_train_fitness": 0.955151670940784
+      },
+      {
+        "params": {
+          "delta_theta": 0.15707963267948966,
+          "p_mut": 0.02
+        },
+        "mean_train_fitness": 0.9556645625830194
+      },
+      {
+        "params": {
+          "delta_theta": 0.15707963267948966,
+          "p_mut": 0.05
+        },
+        "mean_train_fitness": 0.9526981128899633
+      },
+      {
+        "params": {
+          "delta_theta": 0.25132741228718347,
+          "p_mut": 0.005
+        },
+        "mean_train_fitness": 0.9650479652702462
+      },
+      {
+        "params": {
+          "delta_theta": 0.25132741228718347,
+          "p_mut": 0.02
+        },
+        "mean_train_fitness": 0.959688301295435
+      },
+      {
+        "params": {
+          "delta_theta": 0.25132741228718347,
+          "p_mut": 0.05
+        },
+        "mean_train_fitness": 0.9524123490319992
+      }
+    ]
+  },
+  "ga": {
+    "best": {
+      "mutation_rate": 0.01,
+      "crossover_rate": 0.9
+    },
+    "grid": [
+      {
+        "params": {
+          "mutation_rate": 0.01,
+          "crossover_rate": 0.9
+        },
+        "mean_train_fitness": 0.965658974756761
+      },
+      {
+        "params": {
+          "mutation_rate": 0.03,
+          "crossover_rate": 0.9
+        },
+        "mean_train_fitness": 0.9628411109784496
+      },
+      {
+        "params": {
+          "mutation_rate": 0.06,
+          "crossover_rate": 0.9
+        },
+        "mean_train_fitness": 0.9608351235423331
+      }
+    ]
+  }
+}
