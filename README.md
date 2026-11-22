@@ -70,6 +70,8 @@ Statistical analysis is also included to compare algorithm performance across ex
 
 ```text
 qiea_knn/
+├── data/
+│   ├── processed.cleveland.data
 │
 ├── person_a/
 │   ├── __init__.py
@@ -83,6 +85,13 @@ qiea_knn/
 │   ├── standins.py
 │   └── pso_standin.py
 │
+├── person_b/
+│   ├── __init__.py
+│   ├── classifier.py      (crisp and fuzzy KNN)
+│   ├── fitness.py         (cross-validated fitness)
+│   ├── pso.py             (PSO baseline)
+│   └── heart_data.py      (temporary Heart loader)
+│
 ├── shared/
 │   ├── __init__.py
 │   └── interfaces.py
@@ -91,10 +100,12 @@ qiea_knn/
 │   ├── run_phase1_demo.py
 │   ├── run_full_pipeline.py
 │   ├── make_plots.py
-│   └── tune_qiea.py
+│   ├── tune_qiea.py
+│   ├── demo_person_b.py
 │
 ├── tests/
 │   ├── test_phase2.py
+│   ├── test_person_b.py
 │   └── test_contracts.py
 │
 ├── results/
